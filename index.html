@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Structured Card Gallery</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="main-content" class="card-grid-container">
+        
+        <div class="card-column" id="column-asha">
+            <h2>Asha</h2>
+            <div class="card-stack">
+                </div>
+        </div>
+
+        <div class="card-column" id="column-harish">
+            <h2>Harish</h2>
+            <div class="card-stack">
+                </div>
+        </div>
+
+        <div class="card-column" id="column-twisha">
+            <h2>Twisha</h2>
+            <div class="card-stack">
+                </div>
+        </div>
+
+        <div class="card-column" id="column-hrisha">
+            <h2>Hrisha</h2>
+            <div class="card-stack">
+                </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const columnNames = ['asha', 'harish', 'twisha', 'hrisha'];
+            const cardsPerColumn = 25; // 100 cards total / 4 columns = 25 cards per column
+            let globalCardIndex = 1; // Tracks overall card numbering for images
+
+            columnNames.forEach((name, colIndex) => {
+                const cardStackElement = document.querySelector(`#column-${name} .card-stack`);
+                
+                for (let i = 0; i < cardsPerColumn; i++) {
+                    const frontImageIndex = (globalCardIndex * 2) - 1; 
+                    const backImageIndex = globalCardIndex * 2; 
+
+                    const cardHTML = `
+                        <div class="card-container">
+                            <div class="card-inner">
+                                <div class="card-face card-front">
+                                    <img src="photo${frontImageIndex}.png" alt="Card ${globalCardIndex} Front">
+                                </div>
+                                <div class="card-face card-back">
+                                    <img src="photo${backImageIndex}.png" alt="Card ${globalCardIndex} Back">
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    cardStackElement.insertAdjacentHTML('beforeend', cardHTML);
+                    globalCardIndex++;
+                }
+            });
+
+            // Initialize card flips *after* all cards are generated
+            initializeCardInteractions();
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
