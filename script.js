@@ -34,34 +34,76 @@ function initializeCardInteractions() {
             }
         });
 
-        // --- NEW: SHARE FUNCTIONALITY ---
-        const whatsappBtn = card.querySelector('.share-whatsapp');
-        const mailBtn = card.querySelector('.share-mail');
-
-        const getShareMessage = () => {
+        // --- NEW & IMPROVED SHARE FUNCTIONALITY ---
+        
+        // This is the old text/link sharing function, used as a fallback
+        const shareLinkFallback = (platform) => {
             const frontImg = card.querySelector('.card-front img');
-            const cardPageUrl = `${window.location.href.split('#')[0]}#${card.id}`; // Get clean URL + card ID
+            const cardPageUrl = `${window.location.href.split('#')[0]}#${card.id}`;
             const message = `Check out this card I pulled!\n\n` +
                           `Card: ${frontImg.alt.replace(' Front', '')}\n\n` +
                           `View it here: ${cardPageUrl}`;
-            return message;
+
+            if (platform === 'whatsapp') {
+                const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
+            } else if (platform === 'mail') {
+                const subject = "A Card from the Gallery";
+                const mailtoUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+                window.location.href = mailtoUrl;
+            }
         };
 
-        // WhatsApp Share Logic
+        // This is the NEW function that tries to share the actual photo
+        const shareCardPhoto = async (platform) => {
+            const frontImg = card.querySelector('.card-front img');
+            const cardTitle = `Card ${frontImg.alt.replace(' Front', '')}`;
+            const shareText = "Check out this card from the gallery!";
+
+            // Check if Web Share API is supported and can share files
+            if (navigator.share && navigator.canShare) {
+                try {
+                    // 1. Fetch the image from its URL
+                    const response = await fetch(frontImg.src);
+                    const blob = await response.blob();
+
+                    // 2. Create a file from the fetched data
+                    const file = new File([blob], 'card.png', { type: blob.type });
+
+                    // 3. Check if the browser can share this file
+                    if (navigator.canShare({ files: [file] })) {
+                        // 4. Use the Web Share API to share the file
+                        await navigator.share({
+                            files: [file],
+                            title: cardTitle,
+                            text: shareText,
+                        });
+                        return; // Exit the function if sharing was successful
+                    }
+                } catch (error) {
+                    console.error('Error sharing photo:', error);
+                    // If sharing fails (e.g., user cancels), fall through to the link sharing
+                }
+            }
+            
+            // If we reach here, it's because Web Share isn't supported or failed.
+            // Use the old link sharing method as a fallback.
+            console.log('Web Share API not supported or failed. Falling back to link sharing.');
+            shareLinkFallback(platform);
+        };
+        
+        // Add listeners to the buttons
+        const whatsappBtn = card.querySelector('.share-whatsapp');
+        const mailBtn = card.querySelector('.share-mail');
+
         whatsappBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // VERY IMPORTANT: Prevents the card from resetting
-            const message = getShareMessage();
-            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
+            e.stopPropagation();
+            shareCardPhoto('whatsapp');
         });
 
-        // Email Share Logic
         mailBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // VERY IMPORTANT: Prevents the card from resetting
-            const message = getShareMessage();
-            const subject = "A Card from the Gallery";
-            const mailtoUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
-            window.location.href = mailtoUrl;
+            e.stopPropagation();
+            shareCardPhoto('mail');
         });
     });
 }
@@ -102,7 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const frontImageIndex = (globalCardIndex * 2) - 1; 
             const backImageIndex = globalCardIndex * 2; 
 
-            // UPDATED: Added a unique ID to the container and the share buttons on the card-back
             const cardHTML = `
                 <div class="card-container" id="card-${globalCardIndex}">
                     <div class="card-inner">
