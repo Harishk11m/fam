@@ -1,7 +1,8 @@
 // =========================================================================
 // --- CONSTANTS ---
 // =========================================================================
-const CORRECT_PASSWORD = '123';
+// Corrected password to match the hint in your HTML file
+const CORRECT_PASSWORD = 'jadaun';
 
 // =========================================================================
 // --- INDIVIDUAL CARD PULL AND FLIP LOGIC (Multi-Step Interaction) ---
@@ -163,6 +164,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let globalCardIndex = 1;
 
     columnNames.forEach((name) => {
+        // --- NEW CODE START ---
+        // Select the h2 element for the current column
+        const headingElement = document.querySelector(`#column-${name} h2`);
+        // Capitalize the first letter of the name
+        const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
+        // Update the heading text to include the card count
+        headingElement.textContent = `${capitalizedName} (${cardsPerColumn} Cards)`;
+        // --- NEW CODE END ---
+
         const cardStackElement = document.querySelector(`#column-${name} .card-stack`);
         for (let i = 0; i < cardsPerColumn; i++) {
             const frontImageIndex = (globalCardIndex * 2) - 1; 
