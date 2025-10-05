@@ -227,19 +227,7 @@ body {
 /* ---------------------------------------------------------------------- */
 /* --- Share Button Styling --- */
 /* ---------------------------------------------------------------------- */
-.share-buttons {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: space-evenly;
-    background: rgba(0, 0, 0, 0.4);
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-}
+
 
 .share-btn {
     padding: 8px 15px;
