@@ -1,0 +1,271 @@
+/* ---------------------------------------------------------------------- */
+/* --- BODY STYLING --- */
+/* ---------------------------------------------------------------------- */
+body {
+    background-color: #121212;
+    min-height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #eee;
+}
+
+/* ---------------------------------------------------------------------- */
+/* --- Password Overlay Styling --- */
+/* ---------------------------------------------------------------------- */
+#password-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    flex-direction: column;
+    text-align: center;
+}
+
+#password-box {
+    background-color: #2c3e50;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+#password-box h1 {
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+#password-input {
+    padding: 10px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    width: 200px;
+    font-size: 16px;
+}
+
+#password-submit {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#password-submit:hover {
+    background-color: #0056b3;
+}
+
+#error-message {
+    color: #ff4d4d;
+    margin-top: 15px;
+    min-height: 20px;
+}
+
+/* ---------------------------------------------------------------------- */
+/* --- Main Grid Container for Columns --- */
+/* ---------------------------------------------------------------------- */
+.card-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 20px;
+    max-width: 1500px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.card-column {
+    text-align: center;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.card-column h2 {
+    color: #007bff;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+/* ---------------------------------------------------------------------- */
+/* --- Card Stack and Container Styling --- */
+/* ---------------------------------------------------------------------- */
+.card-stack {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 1345px; /* Height for 25 cards */
+    margin-top: 20px;
+}
+
+.card-container {
+    position: absolute;
+    width: 350px;
+    height: 220px;
+    cursor: pointer;
+    perspective: 1000px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    transition: transform 0.5s ease-in-out, box-shadow 0.3s ease-in-out, z-index 0.3s;
+    transform: rotateX(2deg) translateY(var(--card-offset-y, 0px)) translateX(0px);
+    transform-origin: center bottom;
+    z-index: var(--card-z-index, 1);
+    pointer-events: none;
+}
+
+.card-container:not(.is-pulled):hover {
+    transform: rotateX(2deg) translateY(var(--card-offset-y, 0px)) translateX(0px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* --- Stacking Variables for 25 cards --- */
+.card-stack .card-container:nth-child(1) { --card-offset-y: 0px; --card-z-index: 25; }
+.card-stack .card-container:nth-child(2) { --card-offset-y: 45px; --card-z-index: 24; }
+.card-stack .card-container:nth-child(3) { --card-offset-y: 90px; --card-z-index: 23; }
+.card-stack .card-container:nth-child(4) { --card-offset-y: 135px; --card-z-index: 22; }
+.card-stack .card-container:nth-child(5) { --card-offset-y: 180px; --card-z-index: 21; }
+.card-stack .card-container:nth-child(6) { --card-offset-y: 225px; --card-z-index: 20; }
+.card-stack .card-container:nth-child(7) { --card-offset-y: 270px; --card-z-index: 19; }
+.card-stack .card-container:nth-child(8) { --card-offset-y: 315px; --card-z-index: 18; }
+.card-stack .card-container:nth-child(9) { --card-offset-y: 360px; --card-z-index: 17; }
+.card-stack .card-container:nth-child(10) { --card-offset-y: 405px; --card-z-index: 16; }
+.card-stack .card-container:nth-child(11) { --card-offset-y: 450px; --card-z-index: 15; }
+.card-stack .card-container:nth-child(12) { --card-offset-y: 495px; --card-z-index: 14; }
+.card-stack .card-container:nth-child(13) { --card-offset-y: 540px; --card-z-index: 13; }
+.card-stack .card-container:nth-child(14) { --card-offset-y: 585px; --card-z-index: 12; }
+.card-stack .card-container:nth-child(15) { --card-offset-y: 630px; --card-z-index: 11; }
+.card-stack .card-container:nth-child(16) { --card-offset-y: 675px; --card-z-index: 10; }
+.card-stack .card-container:nth-child(17) { --card-offset-y: 720px; --card-z-index: 9; }
+.card-stack .card-container:nth-child(18) { --card-offset-y: 765px; --card-z-index: 8; }
+.card-stack .card-container:nth-child(19) { --card-offset-y: 810px; --card-z-index: 7; }
+.card-stack .card-container:nth-child(20) { --card-offset-y: 855px; --card-z-index: 6; }
+.card-stack .card-container:nth-child(21) { --card-offset-y: 900px; --card-z-index: 5; }
+.card-stack .card-container:nth-child(22) { --card-offset-y: 945px; --card-z-index: 4; }
+.card-stack .card-container:nth-child(23) { --card-offset-y: 990px; --card-z-index: 3; }
+.card-stack .card-container:nth-child(24) { --card-offset-y: 1035px; --card-z-index: 2; }
+.card-stack .card-container:nth-child(25) { --card-offset-y: 1080px; --card-z-index: 1; }
+
+.card-container.is-pulled {
+    transform: rotateX(0deg) scale(1.05) translateZ(50px) translateX(150px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9) !important;
+    z-index: 101 !important;
+}
+
+/* ---------------------------------------------------------------------- */
+/* --- Card Flip Structure --- */
+/* ---------------------------------------------------------------------- */
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+    pointer-events: auto;
+}
+
+.card-inner.is-flipped {
+    transform: rotateY(180deg);
+}
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: block;
+    padding: 0;
+    box-sizing: border-box;
+    border-radius: 10px;
+    background-color: #ffffff;
+}
+
+.card-front {
+    transform: rotateY(0deg);
+}
+
+.card-back {
+    background-color: #2c3e50;
+    color: white;
+    transform: rotateY(180deg);
+}
+
+.card-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* ---------------------------------------------------------------------- */
+/* --- Responsive Adjustments --- */
+/* ---------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .card-grid-container {
+        padding: 10px;
+        gap: 15px;
+    }
+
+    .card-container.is-pulled {
+        transform: rotateX(0deg)
+                   scale(1.05)
+                   translateZ(80px)
+                   translateX(20px);
+        z-index: 101 !important;
+    }
+}
+/* ---------------------------------------------------------------------- */
+/* --- Share Button Styling --- */
+/* ---------------------------------------------------------------------- */
+.share-buttons {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-evenly;
+    background: rgba(0, 0, 0, 0.4);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.share-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+    transition: transform 0.2s ease, background-color 0.3s;
+}
+
+.share-btn:hover {
+    transform: scale(1.05);
+}
+
+.share-whatsapp {
+    background-color: #25D366;
+}
+.share-whatsapp:hover {
+    background-color: #1DAE54;
+}
+
+.share-mail {
+    background-color: #EA4335;
+}
+.share-mail:hover {
+    background-color: #c5372a;
+}
