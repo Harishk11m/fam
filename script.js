@@ -35,7 +35,7 @@ function initializeCardInteractions() {
         });
 
         // --- NEW & IMPROVED SHARE FUNCTIONALITY ---
-        
+
         // This is the old text/link sharing function, used as a fallback
         const shareLinkFallback = (platform) => {
             const frontImg = card.querySelector('.card-front img');
@@ -54,40 +54,64 @@ function initializeCardInteractions() {
             }
         };
 
-        // This is the NEW function that tries to share the actual photo
+        // This is the NEW function that tries to share both photos
         const shareCardPhoto = async (platform) => {
             const frontImg = card.querySelector('.card-front img');
+            const backImg = card.querySelector('.card-back img'); 
+            
             const cardTitle = `Card ${frontImg.alt.replace(' Front', '')}`;
             const shareText = "Check out this card from the gallery!";
 
-            // Check if Web Share API is supported and can share files
+            // Check if Web Share API is supported
             if (navigator.share && navigator.canShare) {
                 try {
-                    // 1. Fetch the image from its URL
-                    const response = await fetch(frontImg.src);
-                    const blob = await response.blob();
+                    // Fetch both images concurrently
+                    const [frontResponse, backResponse] = await Promise.all([
+                        fetch(frontImg.src),
+                        fetch(backImg.src)
+                    ]);
 
-                    // 2. Create a file from the fetched data
-                    const file = new File([blob], 'card.png', { type: blob.type });
+                    const frontBlob = await frontResponse.blob();
+                    const backBlob = await backResponse.blob();
 
-                    // 3. Check if the browser can share this file
-                    if (navigator.canShare({ files: [file] })) {
-                        // 4. Use the Web Share API to share the file
+                    // Create a File object for each image
+                    const frontFile = new File([frontBlob], 'card-front.png', { type: frontBlob.type });
+                    const backFile = new File([backBlob], 'card-back.png', { type: backBlob.type });
+                    const filesArray = [frontFile, backFile];
+
+                    // Check if the browser can share MULTIPLE files
+                    if (navigator.canShare({ files: filesArray })) {
                         await navigator.share({
-                            files: [file],
+                            files: filesArray,
                             title: cardTitle,
                             text: shareText,
                         });
-                        return; // Exit the function if sharing was successful
+                        console.log('Successfully shared both images.');
+                        return; // Exit if sharing was successful
+                    } 
+                    // FALLBACK 1: If multiple files aren't supported, try sharing just the front
+                    else if (navigator.canShare({ files: [frontFile] })) {
+                        console.warn('Could not share multiple files. Sharing only the front image.');
+                        await navigator.share({
+                            files: [frontFile],
+                            title: cardTitle,
+                            text: shareText,
+                        });
+                        console.log('Successfully shared front image.');
+                        return; // Exit if sharing was successful
                     }
+
                 } catch (error) {
-                    console.error('Error sharing photo:', error);
-                    // If sharing fails (e.g., user cancels), fall through to the link sharing
+                    if (error.name !== 'AbortError') {
+                        console.error('Error sharing photo(s):', error);
+                    } else {
+                        console.log('Share cancelled by user.');
+                        return;
+                    }
                 }
             }
             
-            // If we reach here, it's because Web Share isn't supported or failed.
-            // Use the old link sharing method as a fallback.
+            // FALLBACK 2: If Web Share isn't supported or failed, use the old link sharing method.
             console.log('Web Share API not supported or failed. Falling back to link sharing.');
             shareLinkFallback(platform);
         };
