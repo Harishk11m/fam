@@ -188,7 +188,7 @@ body {
     /* 1. Positioning for fixed screen view */
     position: fixed !important; /* Forces the card to stay put relative to the viewport */
     top: 50%;                    /* Start position at 50% down from the top */
-    left: 25%;                   /* Start position at 50% across from the left */
+    left: 15%;                   /* Start position at 50% across from the left */
 
     /* 2. Adjustment to center the card */
     /* This shifts the card back by half its width (350px/2 = 175px) 
