@@ -124,6 +124,34 @@ body {
     pointer-events: none;
 }
 
+/* ---------------------------------------------------------------------- */
+/* --- ADDED CSS FOR CARD INDEX/SERIAL NUMBER --- */
+/* ---------------------------------------------------------------------- */
+.card-index {
+    position: absolute;
+    bottom: 10px;       /* Position at the bottom (moved slightly up from 5px for better margin) */
+    right: 10px;        /* Position in the right corner (moved slightly in from 5px) */
+    z-index: 10;        /* Keep it above the card face images */
+    background-color: rgba(0, 0, 0, 0.8); /* Opaque background for visibility */
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 50%; /* Make it circular */
+    font-size: 12px;
+    font-weight: bold;
+    opacity: 1;         /* Default visible state */
+    transition: opacity 0.3s;
+    pointer-events: none; /* Crucial: ensures clicks go through to the card */
+}
+
+/* Rule to hide the number when the card is pulled */
+.card-container.is-pulled .card-index {
+    opacity: 0;
+}
+/* ---------------------------------------------------------------------- */
+/* --- END ADDED CSS --- */
+/* ---------------------------------------------------------------------- */
+
+
 .card-container:not(.is-pulled):hover {
     transform: rotateX(2deg) translateY(var(--card-offset-y, 0px)) translateX(0px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
@@ -220,9 +248,9 @@ body {
 
     .card-container.is-pulled {
         transform: rotateX(0deg)
-                   scale(1.05)
-                   translateZ(80px)
-                   translateX(20px);
+                    scale(1.05)
+                    translateZ(80px)
+                    translateX(20px);
         z-index: 101 !important;
     }
 }

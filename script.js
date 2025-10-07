@@ -156,7 +156,7 @@ function checkPassword() {
 }
 
 // =========================================================================
-// --- DOM CONTENT GENERATION ---
+// --- DOM CONTENT GENERATION (Corrected) ---
 // =========================================================================
 document.addEventListener('DOMContentLoaded', () => {
     const columnNames = ['asha', 'harish', 'twisha', 'hrisha', 'papa', 'mammy'];
@@ -164,22 +164,23 @@ document.addEventListener('DOMContentLoaded', () => {
     let globalCardIndex = 1;
 
     columnNames.forEach((name) => {
-        // --- NEW CODE START ---
-        // Select the h2 element for the current column
+        // ... (Existing code for heading update) ...
         const headingElement = document.querySelector(`#column-${name} h2`);
-        // Capitalize the first letter of the name
         const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
-        // Update the heading text to include the card count
         headingElement.textContent = `${capitalizedName} (${cardsPerColumn} Cards)`;
-        // --- NEW CODE END ---
+        // ... (Existing code for heading update) ...
 
         const cardStackElement = document.querySelector(`#column-${name} .card-stack`);
         for (let i = 0; i < cardsPerColumn; i++) {
-            const frontImageIndex = (globalCardIndex * 2) - 1; 
-            const backImageIndex = globalCardIndex * 2; 
+            const frontImageIndex = (globalCardIndex * 2) - 1;
+            const backImageIndex = globalCardIndex * 2;
+            
+            // i + 1 gives the serial number within its *stack* (1 to 25)
+            // If you want the global index (1 to 150), use 'globalCardIndex' instead
+            const stackIndex = i + 1; 
 
             const cardHTML = `
-                <div class="card-container" id="card-${globalCardIndex}">
+                <div class="card-container" id="card-${globalCardIndex}" data-stack-index="${stackIndex}">
                     <div class="card-inner">
                         <div class="card-face card-front">
                             <img src="photo${frontImageIndex}.png" alt="Card ${globalCardIndex} Front">
@@ -192,6 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                         </div>
                     </div>
+                    <div class="card-index">${stackIndex}</div>
                 </div>
             `;
             cardStackElement.insertAdjacentHTML('beforeend', cardHTML);
@@ -199,3 +201,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+// ... (Rest of your existing code remains the same) ...
