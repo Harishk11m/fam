@@ -185,10 +185,22 @@ body {
 .card-stack .card-container:nth-child(25) { --card-offset-y: 1080px; --card-z-index: 1; }
 
 .card-container.is-pulled {
-    transform: rotateX(0deg) scale(1.05) translateZ(50px) translateX(150px);
+    /* 1. Positioning for fixed screen view */
+    position: fixed !important; /* Forces the card to stay put relative to the viewport */
+    top: 50%;                    /* Start position at 50% down from the top */
+    left: 50%;                   /* Start position at 50% across from the left */
+
+    /* 2. Adjustment to center the card */
+    /* This shifts the card back by half its width (350px/2 = 175px) 
+       and half its height (220px/2 = 110px) to achieve true centering. */
+    transform: translate(-50%, -50%) rotateX(0deg) scale(1.05); 
+    
+    /* 3. Increase Z-index and shadow for visual prominence */
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9) !important;
-    z-index: 101 !important;
-    position: sticky;
+    z-index: 1000 !important; /* Must be very high to cover all other content */
+    
+    /* 4. Remove unnecessary property from the original code */
+    /* Removed: translateZ(50px) translateX(150px) */
 }
 
 /* ---------------------------------------------------------------------- */
